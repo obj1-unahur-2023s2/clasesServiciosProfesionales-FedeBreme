@@ -30,11 +30,14 @@ class Empresa {
 	    return profesionales.any({p => unSolicitante.puedeSerAtendidoPor(p)})
     }
     
-    method darServicio(unCliente) {
-    	if (self.puedeSatisfacer(unCliente)) {
-    		profesionales.anyOne({p => p.puedeSatisfacer(unCliente)}).cobrar(profesionales.honorariosPorHora())
-    		clientes.add(unCliente)
-    	} 
+    method darServicio(unSolicitante) {
+        if(not self.puedeSatisfacer(unSolicitante)) {
+        	self.error("No se puede atender al solicitante")
+        } else {
+        	const profElegido = profesionales.filter({p=>unSolicitante.puedeSerAtendidoPor(p)}.anyOne())
+            profElegido.cobrar(profElegido.honorarios())
+            clientes.add(unSolicitante)
+        }
     }
     
     method cantidadDeClientes() {
