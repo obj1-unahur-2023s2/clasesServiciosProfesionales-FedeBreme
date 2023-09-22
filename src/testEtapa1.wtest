@@ -1,0 +1,58 @@
+import profesionales.*
+import universidad.*
+import empresas.*
+import solicitantes.*
+
+describe "test de empresa" {
+	//universidades
+	const sanMartin = new Universidad(provincia = "BS AS", honorariosRecomendados=3500)
+	const unahur = new Universidad(provincia = "BS AS", honorariosRecomendados=8800)
+	const rosario = new Universidad (provincia = "Santa Fe", honorariosRecomendados = 2800)
+	const corrientes = new Universidad (provincia = "Corrientes", honorariosRecomendados = 4200)
+	
+	//profesionales
+	const juana = new ProfesionalVinculado(universidad=sanMartin)
+	const melina = new ProfesionalAsociado(universidad=corrientes)
+	const rocio = new ProfesionalLibre(universidad=unahur, honorariosPorHora=5000)
+	const luciana = new ProfesionalLibre(universidad=rosario, honorariosPorHora=3200)
+	
+	//empresa
+	const empresaNueva = new Empresa(honorariosDeReferencia=3500)
+	
+	method initialize() {
+		empresaNueva.contratarProfesional(juana)
+		empresaNueva.contratarProfesional(melina)
+		empresaNueva.contratarProfesional(rocio)
+		empresaNueva.contratarProfesional(luciana)
+	}
+	
+	test "el unico profesional caro es Rocio" {
+		rocio.agregarProvincia("Santa Fe")
+		rocio.agregarProvincia("Cordoba")
+		rocio.agregarProvincia("BS AS")
+		assert.equals(#{rocio}, empresaNueva.profesionalesCaros())
+	}
+	
+	test "las unicas universidades formadoras no son solo las de Rosario, Corrientes y Hurlingham" {
+		assert.equals(#{sanMartin, corrientes, unahur, rosario},empresaNueva.universidadesFormadoras())
+	}
+	
+	test "la profesional mas barata es juana" {
+		sanMartin.honorariosRecomendados(1600)
+		assert.equals(juana, empresaNueva.profesionalMasBarato())
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

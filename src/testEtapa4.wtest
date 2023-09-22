@@ -1,0 +1,33 @@
+import profesionales.*
+import universidad.*
+import empresas.*
+import solicitantes.*
+
+describe "test de trabajos hechos" {
+	//persona
+	const julian = new Persona(provinciaDondeVive="Corrientes")
+	
+	//universidades
+	const sanMartin = new Universidad(provincia = "BS AS", honorariosRecomendados=3500)
+	const unahur = new Universidad(provincia = "BS AS", honorariosRecomendados=8800)
+	const rosario = new Universidad (provincia = "Santa Fe", honorariosRecomendados = 2800)
+	const corrientes = new Universidad (provincia = "Corrientes", honorariosRecomendados = 4200)
+	
+	//profesionales
+	const juana = new ProfesionalVinculado(universidad=sanMartin)
+	const melina = new ProfesionalAsociado(universidad=corrientes)
+	const rocio = new ProfesionalLibre(universidad=unahur, honorariosPorHora=5000)
+	const luciana = new ProfesionalLibre(universidad=rosario, honorariosPorHora=3200)
+	
+	//empresa
+	const empresaNueva = new Empresa(honorariosDeReferencia=3500)
+	
+	method initialize() {
+		empresaNueva.contratarProfesional(juana)
+		empresaNueva.contratarProfesional(melina)
+		empresaNueva.contratarProfesional(rocio)
+		empresaNueva.contratarProfesional(luciana)
+	}
+	
+	
+}

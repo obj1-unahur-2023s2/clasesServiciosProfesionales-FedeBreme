@@ -1,0 +1,36 @@
+import profesionales.*
+import universidad.*
+import empresas.*
+import solicitantes.*
+
+describe "test de cobros" {
+	//universidades
+	const sanMartin = new Universidad(provincia = "BS AS", honorariosRecomendados=3500)
+	const unahur = new Universidad(provincia = "BS AS", honorariosRecomendados=8800)
+	const rosario = new Universidad (provincia = "Santa Fe", honorariosRecomendados = 2800)
+	const corrientes = new Universidad (provincia = "Corrientes", honorariosRecomendados = 4200)
+	
+	//profesionales
+	const juana = new ProfesionalVinculado(universidad=sanMartin)
+	const melina = new ProfesionalAsociado(universidad=corrientes)
+	const rocio = new ProfesionalLibre(universidad=unahur, honorariosPorHora=5000)
+	const luciana = new ProfesionalLibre(universidad=rosario, honorariosPorHora=3200)
+	
+	//vinculados
+	test "juana cobra un importe de 1000, dona la mitad a la universidad de sanMartin" {
+		juana.cobrar(1000)
+		assert.equals(500, sanMartin.donacionesTotales())
+	}
+	
+	test "melina cobra un importe de 20000 y le da todo a la asociacionProfesionalesDelLitoral" {
+		melina.cobrar(20000)
+		assert.equals(20000, asociacionProfesionalesDelLitoral.donacionesTotales())
+	}
+	
+	test "rocio cobra un importe de 2000, le pasa 500 a luciana y ella pasa a tener 1500 y luciana 500" {
+		rocio.cobrar(2000)
+		rocio.pasarDinero(luciana, 500)
+		assert.equals(1500, rocio.totalRecaudado())
+		assert.equals(500, luciana.totalRecaudado())
+	}
+}
